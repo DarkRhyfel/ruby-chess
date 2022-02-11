@@ -10,7 +10,7 @@ class Piece
     @position = position
   end
 
-  def move?
+  def move(_)
     raise 'NotImplemented'
   end
 end

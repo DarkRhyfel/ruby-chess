@@ -10,4 +10,8 @@ require_relative '../../modules/vertical_move'
 class Rook < Piece
   include HorizontalMove
   include VerticalMove
+
+  def move(final_position)
+    valid_horizontal_move(final_position) || valid_vertical_move(final_position)
+  end
 end

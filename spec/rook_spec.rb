@@ -52,4 +52,34 @@ RSpec.describe Rook do # rubocop:disable Metrics/BlockLength
       end
     end
   end
+
+  describe '#move?' do
+    context 'when is moving only horizontally' do
+      it 'is a valid move' do
+        result = rook_test.move(['A', 4])
+        expect(result).to eq true
+      end
+    end
+
+    context 'when is moving only vertically' do
+      it 'is a valid move' do
+        result = rook_test.move(['F', 1])
+        expect(result).to eq true
+      end
+    end
+
+    context 'when is moving diagonally' do
+      it 'is not a valid move' do
+        result = rook_test.move(['C', 3])
+        expect(result).to eq false
+      end
+    end
+
+    context 'when is an impossible move' do
+      it 'is not a valid move' do
+        result = rook_test.move(['D', 5])
+        expect(result).to eq false
+      end
+    end
+  end
 end
