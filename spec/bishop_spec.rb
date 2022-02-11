@@ -43,4 +43,34 @@ RSpec.describe Bishop do # rubocop:disable Metrics/BlockLength
       end
     end
   end
+
+  describe '#move' do
+    context 'when is moving diagonally' do
+      it 'is a valid move' do
+        result = bishop_test.move(['B', 2])
+        expect(result).to eq true
+      end
+    end
+
+    context 'when is moving horizontally' do
+      it 'is not a valid move' do
+        result = bishop_test.move(['C', 2])
+        expect(result).to eq false
+      end
+    end
+
+    context 'when is moving vertically' do
+      it 'is not a valid move' do
+        result = bishop_test.move(['B', 1])
+        expect(result).to eq false
+      end
+    end
+
+    context 'when is an invalid position' do
+      it 'is not a valid move' do
+        result = bishop_test.move(['O', 10])
+        expect(result).to eq false
+      end
+    end
+  end
 end
