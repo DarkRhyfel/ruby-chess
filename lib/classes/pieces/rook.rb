@@ -2,8 +2,8 @@
 
 # External references
 require_relative '../base/piece'
-require_relative '../../modules/horizontal_move'
-require_relative '../../modules/vertical_move'
+require_relative '../../modules/moves/horizontal_move'
+require_relative '../../modules/moves/vertical_move'
 
 # Rook class
 # Represents the rook and it's possible movements
