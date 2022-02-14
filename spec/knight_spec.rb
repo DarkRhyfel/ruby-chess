@@ -22,23 +22,30 @@ RSpec.describe Knight do # rubocop:disable Metrics/BlockLength
       end
     end
 
-    context 'when is moving only horizontally' do
+    context 'when is only changing its column' do
       it 'is not a valid move' do
         result = knight_test.valid_knight_move(['E', 1])
         expect(result).to eq false
       end
     end
 
-    context 'when is moving only vertically' do
+    context 'when is only changing its row' do
       it 'is not a valid move' do
         result = knight_test.valid_knight_move(['B', 6])
         expect(result).to eq false
       end
     end
 
-    context 'when is moving diagonally' do
+    context 'when is changing bot row and column' do
       it 'is not a valid move' do
         result = knight_test.valid_knight_move(['E', 4])
+        expect(result).to eq false
+      end
+    end
+
+    context 'when is going out of the board' do
+      it 'is not a valid move' do
+        result = knight_test.valid_knight_move(['O', 9])
         expect(result).to eq false
       end
     end
