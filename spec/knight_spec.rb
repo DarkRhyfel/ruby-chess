@@ -50,4 +50,41 @@ RSpec.describe Knight do # rubocop:disable Metrics/BlockLength
       end
     end
   end
+
+  describe '#move' do # rubocop:disable Metrics/BlockLength
+    context 'when is moving as a knight' do
+      it 'is a valid move' do
+        result = knight_test.move(['A', 3])
+        expect(result).to eq true
+      end
+    end
+
+    context 'when is moving horizontally' do
+      it 'is not a valid move' do
+        result = knight_test.move(['G', 1])
+        expect(result).to eq false
+      end
+    end
+
+    context 'when is moving vertically' do
+      it 'is not a valid move' do
+        result = knight_test.move(['B', 8])
+        expect(result).to eq false
+      end
+    end
+
+    context 'when is moving diagonally' do
+      it 'is not a valid move' do
+        result = knight_test.move(['C', 2])
+        expect(result).to eq false
+      end
+    end
+
+    context 'when is an invalid tile' do
+      it 'is not a valid move' do
+        result = knight_test.move(['Z', 11])
+        expect(result).to eq false
+      end
+    end
+  end
 end
