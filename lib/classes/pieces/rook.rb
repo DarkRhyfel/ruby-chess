@@ -13,7 +13,7 @@ class Rook < Piece
   include VerticalMove
   include BoardUtils
 
-  def move(final_position)
-    valid_horizontal_move(final_position) || valid_vertical_move(final_position)
+  def valid_moves(board_state)
+    generate_horizontal_moves(board_state).concat(generate_vertical_moves(board_state))
   end
 end
