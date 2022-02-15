@@ -11,7 +11,7 @@ module HorizontalMove
   private
 
   def generate_horizontal(initial, board_state, limit, operator) # rubocop:disable Metrics/MethodLength
-    movements = []
+    moves = []
     current_column, current_row = initial
 
     limit.times do
@@ -22,13 +22,13 @@ module HorizontalMove
       obstacle_piece = board_state.find { |piece| piece.position == [current_column, current_row] }
 
       if obstacle_piece.nil?
-        movements << [[current_column, current_row], false]
+        moves << [[current_column, current_row], false]
       else
-        movements << [[current_column, current_row], true] unless obstacle_piece.color == color
+        moves << [[current_column, current_row], true] unless obstacle_piece.color == color
         break
       end
     end
 
-    movements
+    moves
   end
 end
