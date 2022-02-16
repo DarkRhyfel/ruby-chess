@@ -5,71 +5,36 @@ require_relative '../lib/classes/pieces/king'
 
 # Tests for king piece
 RSpec.describe King do # rubocop:disable Metrics/BlockLength
-  subject(:king_test) { King.new('B', ['E', 1]) }
+  subject(:king_test) { King.new('B', ['E', 2]) }
 
-  describe '#valid_king_move' do # rubocop:disable Metrics/BlockLength
-    context 'when changing its row by 1' do
-      it 'is a valid move' do
-        result = king_test.valid_king_move(['E', 2])
-        expect(result).to eq true
+  describe '#valid_moves' do
+    context 'when calling method for king valid moves' do
+      before do
+        allow(king_test).to receive(:generate_horizontal_moves).and_return([[['D', 2], false], [['F', 2], false]])
+        allow(king_test).to receive(:generate_vertical_moves).and_return([[['E', 1], false], [['E', 3], false]])
+        allow(king_test).to receive(:generate_diagonal_moves).and_return([[['D', 3], false], [['F', 1], false]])
+      end
+
+      it 'receives a call for horizontal moves with a limit' do
+        expect(king_test).to receive(:generate_horizontal_moves).with([], 1)
+        king_test.valid_moves([])
+      end
+
+      it 'receives a call for vertical moves with a limit' do
+        expect(king_test).to receive(:generate_vertical_moves).with([], 1)
+        king_test.valid_moves([])
+      end
+
+      it 'receives a call for diagonal moves with a limit' do
+        expect(king_test).to receive(:generate_diagonal_moves).with([], 1)
+        king_test.valid_moves([])
       end
     end
 
-    context 'when changing its column by 1' do
-      it 'is a valid move' do
-        result = king_test.valid_king_move(['D', 1])
-        expect(result).to eq true
-      end
-    end
-
-    context 'when changing its row and column by 1' do
-      it 'is a valid move' do
-        result = king_test.valid_king_move(['D', 2])
-        expect(result).to eq true
-      end
-    end
-
-    context 'when changing its row by more than 1' do
-      it 'is not a valid move' do
-        result = king_test.valid_king_move(['D', 5])
-        expect(result).to eq false
-      end
-    end
-
-    context 'when changing its column by more than 1' do
-      it 'is not a valid move' do
-        result = king_test.valid_king_move(['A', 1])
-        expect(result).to eq false
-      end
-    end
-
-    context 'when changing both column and row by more than 1' do
-      it 'is not a valid move' do
-        result = king_test.valid_king_move(['G', 3])
-        expect(result).to eq false
-      end
-    end
-
-    context 'when tile is out of the board' do
-      it 'is not a valid move' do
-        result = king_test.valid_king_move(['Z', -9])
-        expect(result).to eq false
-      end
-    end
-  end
-
-  describe '#move' do
-    context 'when moving inside the boundaries' do
-      it 'is a valid move' do
-        result = king_test.move(['E', 2])
-        expect(result).to eq true
-      end
-    end
-
-    context 'when moving outside tbe boundaries' do
-      it 'is not a valid move' do
-        result = king_test.move(['E', -1])
-        expect(result).to eq false
+    context 'when requesting valid moves for the king' do
+      it 'generates 8 possible moves' do
+        king_moves = king_test.valid_moves([])
+        expect(king_moves.count).to eq 8
       end
     end
   end
