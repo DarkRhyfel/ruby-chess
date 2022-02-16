@@ -4,7 +4,7 @@
 require_relative '../lib/classes/pieces/queen'
 
 # Test for Queen
-RSpec.describe Queen do
+RSpec.describe Queen do # rubocop:disable Metrics/BlockLength
   subject(:queen_test) { Queen.new('B', ['D', 1]) }
 
   describe '#valid_moves' do
@@ -28,6 +28,13 @@ RSpec.describe Queen do
       it 'receives a call for diagonal moves' do
         expect(queen_test).to receive(:generate_diagonal_moves).with([])
         queen_test.valid_moves([])
+      end
+    end
+
+    context 'when requesting valid moves for the queen' do
+      it 'generates 21 possible moves' do
+        queen_moves = queen_test.valid_moves([])
+        expect(queen_moves.count).to eq 21
       end
     end
   end
