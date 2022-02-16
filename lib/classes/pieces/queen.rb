@@ -5,6 +5,7 @@ require_relative '../base/piece'
 require_relative '../../modules/moves/horizontal_move'
 require_relative '../../modules/moves/vertical_move'
 require_relative '../../modules/moves/diagonal_move'
+require_relative '../../modules/utils/board_utils'
 
 # Queen class
 # Represents the queen piece and it's movements
@@ -12,10 +13,11 @@ class Queen < Piece
   include HorizontalMove
   include VerticalMove
   include DiagonalMove
+  include BoardUtils
 
-  def move(final_position)
-    valid_horizontal_move(final_position) ||
-      valid_vertical_move(final_position) ||
-      valid_diagonal_move(final_position)
+  def valid_moves(board_state)
+    generate_horizontal_moves(board_state)
+      .concat(generate_vertical_moves(board_state))
+      .concat(generate_diagonal_moves(board_state))
   end
 end
