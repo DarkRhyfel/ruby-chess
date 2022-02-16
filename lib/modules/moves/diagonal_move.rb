@@ -3,34 +3,35 @@
 # Diagonal Move module
 # Validates correct diagonal moves
 module DiagonalMove
-  def valid_diagonal_move(final_position)
-    if compare_change(position, final_position) && in_board?(final_position)
-      true
-    else
-      false
-    end
+  def generate_diagonal_moves(board_state, limit = 7)
+    generate_diagonal(position, board_state, limit, 1, 1)
+      .concat(generate_diagonal(position, board_state, limit, -1, -1))
+      .concat(generate_diagonal(position, board_state, limit, 1, -1))
+      .concat(generate_diagonal(position, board_state, limit, -1, 1))
   end
 
   private
 
-  def absolute_change(initial, final)
-    (initial - final).abs
-  end
+  def generate_diagonal(initial, board_state, limit, column_operator, row_operator) # rubocop:disable Metrics/MethodLength
+    moves = []
+    current_column, current_row = initial
 
-  def compare_change(initial_position, final_position)
-    initial_column, initial_row = initial_position
-    final_column, final_row = final_position
+    limit.times do
+      current_column = (current_column.ord + column_operator).chr
+      current_row += row_operator
 
-    absolute_change(initial_column.ord, final_column.ord) == absolute_change(initial_row, final_row)
-  end
+      break unless inside_board?([current_column, current_row])
 
-  def in_board?(final_position)
-    final_column, final_row = final_position
+      obstacle_piece = board_state.find { |piece| piece.position == [current_column, current_row] }
 
-    if final_column.ord.between?('A'.ord, 'H'.ord) && final_row.between?(1, 8)
-      true
-    else
-      false
+      if obstacle_piece.nil?
+        moves << [[current_column, current_row], false]
+      else
+        moves << [[current_column, current_row], true] unless obstacle_piece.color == color
+        break
+      end
     end
+
+    moves
   end
 end
