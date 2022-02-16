@@ -11,7 +11,7 @@ class Bishop < Piece
   include DiagonalMove
   include BoardUtils
 
-  def move(final_position)
-    valid_diagonal_move(final_position)
+  def valid_moves(board_state)
+    generate_diagonal_moves(board_state)
   end
 end
