@@ -33,4 +33,20 @@ RSpec.describe Knight do # rubocop:disable Metrics/BlockLength
       end
     end
   end
+
+  describe '#valid_moves' do
+    context 'when calling the method for knight valid moves' do
+      it 'requests the knight moves' do
+        expect(knight_test).to receive(:generate_knight_moves).with([])
+        knight_test.valid_moves([])
+      end
+    end
+
+    context 'when requesting the knight valid moves' do
+      it 'generates 8 possible moves' do
+        knight_moves = knight_test.valid_moves([])
+        expect(knight_moves.count).to eq 8
+      end
+    end
+  end
 end

@@ -11,7 +11,7 @@ class Knight < Piece
   include KnightMove
   include BoardUtils
 
-  def move(final_position)
-    valid_knight_move(final_position)
+  def valid_moves(board_state)
+    generate_knight_moves(board_state)
   end
 end
