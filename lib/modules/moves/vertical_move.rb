@@ -8,8 +8,6 @@ module VerticalMove
       .concat(generate_vertical(position, board_state, limit, -1))
   end
 
-  private
-
   def generate_vertical(initial, board_state, limit, operator) # rubocop:disable Metrics/MethodLength
     moves = []
     current_column, current_row = initial

@@ -10,8 +10,6 @@ module DiagonalMove
       .concat(generate_diagonal(position, board_state, limit, -1, 1))
   end
 
-  private
-
   def generate_diagonal(initial, board_state, limit, column_operator, row_operator) # rubocop:disable Metrics/MethodLength
     moves = []
     current_column, current_row = initial

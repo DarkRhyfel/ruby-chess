@@ -3,29 +3,29 @@
 # Pawn move module
 # Validates pawn movements
 module PawnMove
-  def valid_pawn_move(final_position)
-    initial_column, initial_row = position
-    final_column, final_row = final_position
-
-    return false unless initial_column == final_column
-
-    row_difference = color == 'W' ? final_row - initial_row : initial_row - final_row
-
-    return false unless row_difference.positive?
-
-    pawn_movement(row_difference, initial_row, color == 'W' ? 2 : 7)
+  def generate_pawn_moves(board_state)
+    case color
+    when 'B' then generate_moves(position, board_state, -1, 7)
+    when 'W' then generate_moves(position, board_state, 1, 2)
+    else
+      []
+    end
   end
 
   private
 
-  def pawn_movement(difference, initial, reference)
-    case difference
-    when 1
-      true
-    when 2
-      reference == initial
-    else
-      false
-    end
+  def generate_moves(initial, board_state, operator, initial_reference)
+    _, initial_row = initial
+    limit = initial_reference == initial_row ? 2 : 1
+
+    vertical_positions = generate_vertical(initial, board_state, limit, operator)
+    diagonal_positions = generate_diagonal(initial, board_state, 1, 1, operator)
+                         .concat(generate_diagonal(initial, board_state, 1, -1, operator))
+
+    filter_moves(vertical_positions, false).concat(filter_moves(diagonal_positions, true))
+  end
+
+  def filter_moves(positions, criteria)
+    positions.select { |position| position[1] == criteria }
   end
 end
