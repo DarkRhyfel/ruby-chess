@@ -14,4 +14,8 @@ class Pawn < Piece
   include VerticalMove
   include DiagonalMove
   include BoardUtils
+
+  def valid_moves(board_state)
+    generate_pawn_moves(board_state)
+  end
 end

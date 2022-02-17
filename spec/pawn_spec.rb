@@ -64,4 +64,45 @@ RSpec.describe Pawn do # rubocop:disable Metrics/BlockLength
       end
     end
   end
+
+  describe '#valid_moves' do # rubocop:disable Metrics/BlockLength
+    context 'when calling the method for valid pawn moves' do
+      subject(:pawn_test) { Pawn.new('W', ['D', 2]) }
+
+      it 'calls the method to generate moves' do
+        expect(pawn_test).to receive(:generate_pawn_moves).with([])
+        pawn_test.valid_moves([])
+      end
+    end
+
+    context 'when requesting valid moves for white pawn' do
+      subject(:pawn_test) { Pawn.new('W', ['D', 2]) }
+      let(:board_test) { [Pawn.new('W', ['E', 3])] }
+
+      it 'generates 2 possible moves' do
+        pawn_moves = pawn_test.valid_moves(board_test)
+        expect(pawn_moves.count).to eq 2
+      end
+
+      it 'contains an specific list of positions' do
+        pawn_moves = pawn_test.valid_moves(board_test)
+        expect(pawn_moves).to eq [[['D', 3], false], [['D', 4], false]]
+      end
+    end
+
+    context 'when requesting valid moves for black pawn' do
+      subject(:pawn_test) { Pawn.new('B', ['C', 6]) }
+      let(:board_test) { [Pawn.new('W', ['B', 5])] }
+
+      it 'generates 2 possible moves' do
+        pawn_moves = pawn_test.valid_moves(board_test)
+        expect(pawn_moves.count).to eq 2
+      end
+
+      it 'contains an specific list of positions' do
+        pawn_moves = pawn_test.valid_moves(board_test)
+        expect(pawn_moves).to eq [[['C', 5], false], [['B', 5], true]]
+      end
+    end
+  end
 end
