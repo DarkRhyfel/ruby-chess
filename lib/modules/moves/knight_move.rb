@@ -3,34 +3,39 @@
 # Knight moves modules
 # Validates if a knight is moving correctly
 module KnightMove
-  def valid_knight_move(final_position)
-    return false unless in_board?(final_position)
-
-    column_difference, row_difference = move_difference(position, final_position)
-
-    if (column_difference == 2 && row_difference == 1) || (column_difference == 1 && row_difference == 2)
-      true
-    else
-      false
-    end
+  def generate_knight_moves(board_state)
+    generate_moves(position, board_state, 2, 1)
+      .concat(generate_moves(position, board_state, 1, 2))
   end
 
   private
 
-  def move_difference(initial, final)
+  def generate_moves(initial, board_state, column_operator, row_operator) # rubocop:disable Metrics/MethodLength
+    moves = []
     initial_column, initial_row = initial
-    final_column, final_row = final
 
-    [(initial_column.ord - final_column.ord).abs, (initial_row - final_row).abs]
+    move_combinations(column_operator, row_operator).each do |column_change, row_change|
+      new_column, new_row = calculate_next_knight_position(initial_column, initial_row, column_change, row_change)
+
+      next unless inside_board?([new_column, new_row])
+
+      obstacle_piece = board_state.find { |piece| piece.position == [new_column, new_row] }
+
+      if obstacle_piece.nil?
+        moves << [[new_column, new_row], false]
+      else
+        moves << [[new_column, new_row], true] unless obstacle_piece.color == color
+      end
+    end
+
+    moves
   end
 
-  def in_board?(final)
-    final_column, final_row = final
+  def move_combinations(column_operator, row_operator)
+    [-column_operator, column_operator].product([-row_operator, row_operator])
+  end
 
-    if final_column.ord.between?('A'.ord, 'H'.ord) && final_row.between?(1, 8)
-      true
-    else
-      false
-    end
+  def calculate_next_knight_position(initial_column, initial_row, column_change, row_change)
+    [(initial_column.ord + column_change).chr, initial_row + row_change]
   end
 end
