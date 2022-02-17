@@ -15,16 +15,16 @@ module KnightMove
     initial_column, initial_row = initial
 
     move_combinations(column_operator, row_operator).each do |column_change, row_change|
-      new_column, new_row = calculate_next_knight_position(initial_column, initial_row, column_change, row_change)
+      new_position = calculate_next_knight_position(initial_column, initial_row, column_change, row_change)
 
-      next unless inside_board?([new_column, new_row])
+      next unless inside_board?(new_position)
 
-      obstacle_piece = board_state.find { |piece| piece.position == [new_column, new_row] }
+      obstacle_piece = board_state.find { |piece| piece.position == new_position }
 
       if obstacle_piece.nil?
-        moves << [[new_column, new_row], false]
+        moves << [new_position, false]
       else
-        moves << [[new_column, new_row], true] unless obstacle_piece.color == color
+        moves << [new_position, true] unless obstacle_piece.color == color
       end
     end
 
