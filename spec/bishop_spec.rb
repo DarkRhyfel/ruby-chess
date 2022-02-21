@@ -51,7 +51,8 @@ RSpec.describe Bishop do # rubocop:disable Metrics/BlockLength
   describe '#valid_moves' do
     context 'when calling the method to check valid moves' do
       before do
-        allow(bishop_test).to receive(:generate_diagonal_moves).and_return([[['C', 5], false], [['E', 3], false]])
+        allow(bishop_test).to receive(:generate_diagonal_moves)
+          .and_return([PossibleMove.new(['C', 5], false, 'D1'), PossibleMove.new(['E', 3], false, 'D4')])
       end
 
       it 'receives a call for diagonal moves' do
