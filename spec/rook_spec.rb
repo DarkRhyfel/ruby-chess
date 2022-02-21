@@ -68,8 +68,8 @@ RSpec.describe Rook do # rubocop:disable Metrics/BlockLength
 
     context 'when calling the method to check valid moves' do
       before do
-        allow(rook_test).to receive(:generate_horizontal_moves).and_return([['D', 4], false])
-        allow(rook_test).to receive(:generate_vertical_moves).and_return([['E', 5], false])
+        allow(rook_test).to receive(:generate_horizontal_moves).and_return([PossibleMove.new(['D', 4], false, 'H1')])
+        allow(rook_test).to receive(:generate_vertical_moves).and_return([PossibleMove.new(['E', 5], false, 'H1')])
       end
 
       it 'receives a call for horizontal moves' do

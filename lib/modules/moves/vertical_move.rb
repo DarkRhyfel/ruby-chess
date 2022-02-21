@@ -4,11 +4,11 @@
 # Validates vertical moves
 module VerticalMove
   def generate_vertical_moves(board_state, limit = 7)
-    generate_vertical(position, board_state, limit, 1)
-      .concat(generate_vertical(position, board_state, limit, -1))
+    generate_vertical(position, board_state, limit, 1, 'V1')
+      .concat(generate_vertical(position, board_state, limit, -1, 'V2'))
   end
 
-  def generate_vertical(initial, board_state, limit, operator) # rubocop:disable Metrics/MethodLength
+  def generate_vertical(initial, board_state, limit, operator, id) # rubocop:disable Metrics/MethodLength
     moves = []
     current_column, current_row = initial
 
@@ -20,9 +20,9 @@ module VerticalMove
       obstacle_piece = board_state.find { |piece| piece.position == [current_column, current_row] }
 
       if obstacle_piece.nil?
-        moves << [[current_column, current_row], false]
+        moves << PossibleMove.new([current_column, current_row], false, id)
       else
-        moves << [[current_column, current_row], true] unless obstacle_piece.color == color
+        moves << PossibleMove.new([current_column, current_row], true, id) unless obstacle_piece.color == color
         break
       end
     end
