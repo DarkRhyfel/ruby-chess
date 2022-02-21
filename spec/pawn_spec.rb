@@ -86,7 +86,7 @@ RSpec.describe Pawn do # rubocop:disable Metrics/BlockLength
 
       it 'contains an specific list of positions' do
         pawn_moves = pawn_test.valid_moves(board_test)
-        expect(pawn_moves).to eq [[['D', 3], false], [['D', 4], false]]
+        expect(pawn_moves).to eq [PossibleMove.new(['D', 3], false), PossibleMove.new(['D', 4], false)]
       end
     end
 
@@ -101,7 +101,7 @@ RSpec.describe Pawn do # rubocop:disable Metrics/BlockLength
 
       it 'contains an specific list of positions' do
         pawn_moves = pawn_test.valid_moves(board_test)
-        expect(pawn_moves).to eq [[['C', 5], false], [['B', 5], true]]
+        expect(pawn_moves).to eq [PossibleMove.new(['C', 5], false), PossibleMove.new(['B', 5], true)]
       end
     end
   end

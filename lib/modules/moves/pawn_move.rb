@@ -18,14 +18,14 @@ module PawnMove
     _, initial_row = initial
     limit = initial_reference == initial_row ? 2 : 1
 
-    vertical_positions = generate_vertical(initial, board_state, limit, operator)
-    diagonal_positions = generate_diagonal(initial, board_state, 1, 1, operator)
-                         .concat(generate_diagonal(initial, board_state, 1, -1, operator))
+    vertical_positions = generate_vertical(initial, board_state, limit, operator, 'NM')
+    diagonal_positions = generate_diagonal(initial, board_state, 1, [1, operator], 'NM')
+                         .concat(generate_diagonal(initial, board_state, 1, [-1, operator], 'NM'))
 
     filter_moves(vertical_positions, false).concat(filter_moves(diagonal_positions, true))
   end
 
   def filter_moves(positions, criteria)
-    positions.select { |position| position[1] == criteria }
+    positions.select { |possible_move| possible_move.state == criteria }
   end
 end

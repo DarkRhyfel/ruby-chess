@@ -2,6 +2,7 @@
 
 # External references
 require_relative '../base/piece'
+require_relative '../extras/possible_move'
 require_relative '../../modules/moves/pawn_move'
 require_relative '../../modules/moves/vertical_move'
 require_relative '../../modules/moves/diagonal_move'
