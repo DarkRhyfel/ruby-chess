@@ -16,4 +16,8 @@ class PossibleMove
   def <=>(other)
     id <=> other.id && position <=> other.position && state <=> other.state
   end
+
+  def eql?(other)
+    position == other.position
+  end
 end
