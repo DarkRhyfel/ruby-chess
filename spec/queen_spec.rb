@@ -7,12 +7,15 @@ require_relative '../lib/classes/pieces/queen'
 RSpec.describe Queen do # rubocop:disable Metrics/BlockLength
   subject(:queen_test) { Queen.new('B', ['D', 1]) }
 
-  describe '#valid_moves' do
+  describe '#valid_moves' do # rubocop:disable Metrics/BlockLength
     context 'when calling the method for queen valid moves' do
       before do
-        allow(queen_test).to receive(:generate_horizontal_moves).and_return([[['C', 1], false], [['E', 1], false]])
-        allow(queen_test).to receive(:generate_vertical_moves).and_return([[['D', 2], false], [['D', 3], false]])
-        allow(queen_test).to receive(:generate_diagonal_moves).and_return([[['C', 2], false], [['E', 2], false]])
+        allow(queen_test).to receive(:generate_horizontal_moves)
+          .and_return([PossibleMove.new(['C', 1], false, 'H2'), PossibleMove.new(['E', 1], false, 'H1')])
+        allow(queen_test).to receive(:generate_vertical_moves)
+          .and_return([PossibleMove.new(['D', 2], false, 'V1'), PossibleMove.new(['D', 3], false, 'V1')])
+        allow(queen_test).to receive(:generate_diagonal_moves)
+          .and_return([PossibleMove.new(['C', 2], false, 'D4'), PossibleMove.new(['E', 2], false, 'D1')])
       end
 
       it 'receives a call for horizontal moves' do
