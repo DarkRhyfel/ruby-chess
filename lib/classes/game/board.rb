@@ -29,7 +29,7 @@ class Board
 
     valid_move = selected_piece.valid_moves(board_state).find { |move| move.position == final }
 
-    correct_move, result = check_updated_state(board_state, current_player, initial, valid_move)
+    correct_move, result = check_updated_state(current_player, initial, valid_move)
 
     return result unless correct_move
 
@@ -92,37 +92,41 @@ class Board
     end
   end
 
-  def check_updated_state(board_state, player, initial, valid_move)
+  def check_updated_state(player, initial, valid_move)
     if valid_move.nil?
       [false, MoveResult.new(false, BOARD_MESSAGES[:invalid_move])]
-    elsif in_check && !check_resolved?(board_state.clone, player, initial, valid_move)
+    elsif in_check && !check_resolved(clone_and_update_temp_board(initial, valid_move), player).empty?
       [false, MoveResult.new(false, BOARD_MESSAGES[:unresolved_check])]
     else
       [true, nil]
     end
   end
 
-  def check_resolved?(temp_board, player, initial, valid_move)
-    temp_updated_board = update_state(temp_board, initial, valid_move)
+  def check_resolved(current_board_state, player)
+    attacking_pieces = []
 
-    king = temp_updated_board.find { |piece| piece.is_a?(King) && piece.color == player }
-    enemy_pieces = temp_updated_board.reject { |piece| piece.color == player }
+    king = current_board_state.find { |piece| piece.is_a?(King) && piece.color == player }
+    enemy_pieces = current_board_state.reject { |piece| piece.color == player }
 
     enemy_pieces.each do |enemy|
-      return false if enemy.valid_moves(temp_updated_board).any? { |move| move.position == king.position }
+      attacking_pieces << enemy if enemy.valid_moves(current_board_state).any? { |move| move.position == king.position }
     end
 
-    true
+    attacking_pieces
   end
 
-  def update_state(board_state, initial, valid_move)
-    board_state.map do |piece|
+  def update_state(current_board_state, initial, valid_move)
+    current_board_state.map do |piece|
       piece.position = valid_move.position if piece.position == initial
       piece
     end
 
-    board_state.delete_if { |piece| piece.position == valid_move.position } if valid_move.state
+    current_board_state.delete_if { |piece| piece.position == valid_move.position } if valid_move.state
 
-    board_state
+    current_board_state
+  end
+
+  def clone_and_update_temp_board(initial, valid_move)
+    update_state(board_state.clone, initial, valid_move)
   end
 end
