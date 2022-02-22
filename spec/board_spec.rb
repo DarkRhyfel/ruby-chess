@@ -18,64 +18,54 @@ RSpec.describe Board do # rubocop:disable Metrics/BlockLength
 
   describe '#move_piece' do # rubocop:disable Metrics/BlockLength
     context 'when requesting a move in an empty square' do
-      xit 'returns an error message' do
+      it 'returns an error message' do
         error_message = "The position you selected doesn't have a piece in it! Select another one."
-        move_result = board_test.move_piece('P', ['A', 2], ['A', 3])
+        move_result = board_test.move_piece('W', ['A', 3], ['A', 4])
         expect(move_result).to eq MoveResult.new(false, error_message)
       end
     end
 
     context 'when requesting a move of an enemy piece' do
-      xit 'returns an error message' do
+      it 'returns an error message' do
         error_message = 'The piece you selected is not yours! Choose another one.'
-        move_result = board_test.move_piece('P', ['A', 7], ['A', 5])
+        move_result = board_test.move_piece('W', ['A', 7], ['A', 5])
         expect(move_result).to eq MoveResult.new(false, error_message)
       end
     end
 
     context 'when requesting a move of a friendly piece to an invalid position' do
-      context 'and is an invalid position' do
-        xit 'returns an error message' do
-          error_message = "The piece you selected can't move to that position! Select another."
-          move_result = board_test.move_piece('P', ['A', 2], ['A', 7])
-          expect(move_result).to eq MoveResult.new(false, error_message)
-        end
-      end
-
-      context 'and is a valid position' do
-        xit 'continues the process' do
-          expect(board_test).to receive(:include?).and_return(true)
-          board_test.move_piece('P', ['A', 2], ['A', 3])
-        end
+      it 'returns an error message' do
+        error_message = "The piece you selected can't move to that position! Select another."
+        move_result = board_test.move_piece('W', ['A', 2], ['A', 7])
+        expect(move_result).to eq MoveResult.new(false, error_message)
       end
     end
 
-    context 'when the piece move has to resolve a check' do
-      context 'and it does not' do
-        xit 'returns an error message' do
-          error_message = 'You have to protect your king! Make another move.'
-          move_result = board_test.move_piece('P', ['A', 2], ['A', 3])
-          expect(move_result).to eq MoveResult.new(false, error_message)
-        end
+    context 'when the piece move has to resolve a check and it does not' do
+      before do
+        board_test.instance_variable_set(:@in_check, true)
+        board_test.instance_variable_set(
+          :@board_state,
+          [Pawn.new('W', ['A', 2]), King.new('W', ['E', 1]), Rook.new('B', ['E', 4])]
+        )
       end
 
-      context 'and it does' do
-        xit 'continues the process' do
-          expect(board_test).to receive(:verify_check_status)
-          board_test.move_piece('P', ['A', 2], ['A', 3])
-        end
+      it 'returns an error message' do
+        error_message = 'You have to protect your king! Make another move.'
+        move_result = board_test.move_piece('W', ['A', 2], ['A', 3])
+        expect(move_result).to eq MoveResult.new(false, error_message)
       end
     end
 
     context 'when everything is valid' do
-      xit 'updates the piece position' do
-        expect(board_test).to receive(:update_board_state)
-        board_test.move_piece('P', ['A', 2], ['A', 3])
+      it 'updates the piece position' do
+        expect(board_test).to receive(:update_state)
+        board_test.move_piece('W', ['A', 2], ['A', 3])
       end
 
-      xit 'returns a positive result' do
+      it 'returns a positive result' do
         result_message = ''
-        move_result = board_test.move_piece('P', ['A', 2], ['A', 3])
+        move_result = board_test.move_piece('W', ['A', 2], ['A', 3])
         expect(move_result).to eq MoveResult.new(true, result_message)
       end
     end
