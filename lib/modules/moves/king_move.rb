@@ -16,12 +16,9 @@ module KingMove
   end
 
   def filter_moves_by_enemy(moves, board_state)
-    enemy_pieces = board_state.reject { |piece| piece.color == color }
+    enemy_pieces = board_state.reject { |piece| piece.color == color || piece.is_a?(King) }
 
-    enemy_pieces.each do |enemy|
-      common = enemy.valid_moves(board_state).intersection(moves)
-      moves = moves.difference(common)
-    end
+    enemy_pieces.each { |enemy| moves = moves.difference(enemy.valid_moves(board_state)) }
 
     moves
   end

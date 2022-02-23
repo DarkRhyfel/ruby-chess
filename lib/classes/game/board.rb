@@ -12,7 +12,7 @@ require_relative '../extras/move_result'
 
 # Board class
 # Represents the game board and its state
-class Board
+class Board # rubocop:disable Metrics/ClassLength
   attr_reader :board_state, :in_check
 
   def initialize
@@ -36,6 +36,17 @@ class Board
     @board_state = update_state(board_state, initial, valid_move)
 
     MoveResult.new(true, '')
+  end
+
+  def verify_check_status(enemy_player)
+    attacking_pieces = check_resolved(board_state, enemy_player)
+
+    return :no_check if attacking_pieces.empty?
+
+    protector_pieces = board_state.reject { |piece| piece.color != enemy_player || piece.is_a?(King) }
+    attacked_king = board_state.find { |piece| piece.color == enemy_player && piece.is_a?(King) }
+
+    can_avoid_checkmate?(attacking_pieces, protector_pieces, attacked_king) ? :check : :checkmate
   end
 
   private
@@ -128,5 +139,59 @@ class Board
 
   def clone_and_update_temp_board(initial, valid_move)
     update_state(board_state.clone, initial, valid_move)
+  end
+
+  def can_take_attacking_piece?(attacking_pieces, protector_pieces)
+    return false if attacking_pieces.count > 1
+
+    protector_pieces.any? do |piece|
+      can_take = piece.valid_moves(board_state).any? { |move| move.position == attacking_pieces[0].position }
+      return true if can_take
+    end
+
+    false
+  end
+
+  def can_block_attacking_piece?(attacking_pieces, protector_pieces, attacked_king)
+    return false unless attacking_pieces.count == 1 && blockable_pieces(attacking_pieces[0], attacked_king)
+
+    attack_path = calculate_attack_path(attacking_pieces[0], attacked_king)
+
+    protector_pieces.any? do |piece|
+      can_block = piece.valid_moves(board_state).any? do |move|
+        attack_path.any? { |path| path.position == move.position }
+      end
+      return true if can_block
+    end
+
+    false
+  end
+
+  def blockable_pieces(piece, king)
+    if piece.is_a?(Rook) || piece.is_a?(Bishop) || piece.is_a?(Queen)
+      piece_column, piece_row = piece.position
+      king_column, king_row = king.position
+
+      gap = [(piece_column.ord - king_column.ord).abs, (piece_row - king_row).abs]
+      gap.any? { |difference| difference > 1 } ? true : false
+    else
+      false
+    end
+  end
+
+  def calculate_attack_path(attacking_piece, attacked_king)
+    piece_moves = attacking_piece.valid_moves(board_state)
+    path_id = (piece_moves.find { |move| move.position == attacked_king.position }).id
+    piece_moves.select { |move| move.id == path_id }
+  end
+
+  def can_avoid_checkmate?(attacking_pieces, protector_pieces, attacked_king)
+    if can_take_attacking_piece?(attacking_pieces, protector_pieces) ||
+       can_block_attacking_piece?(attacking_pieces, protector_pieces, attacked_king) ||
+       !attacked_king.valid_moves(board_state).empty?
+      true
+    else
+      false
+    end
   end
 end

@@ -70,4 +70,71 @@ RSpec.describe Board do # rubocop:disable Metrics/BlockLength
       end
     end
   end
+
+  describe '#verify_check_status' do # rubocop:disable Metrics/BlockLength
+    context 'when there are no attacking pieces' do
+      it 'returns no_check' do
+        check_result = board_test.verify_check_status('W')
+        expect(check_result).to eq :no_check
+      end
+    end
+
+    context 'when there are attacking pieces but there is a way out' do # rubocop:disable Metrics/BlockLength
+      context 'by capturing the attacking piece' do
+        before do
+          board_test.instance_variable_set(
+            :@board_state,
+            [King.new('W', ['A', 1]), Rook.new('B', ['A', 3]), Queen.new('W', ['C', 1])]
+          )
+        end
+
+        it 'returns only a check' do
+          check_result = board_test.verify_check_status('W')
+          expect(check_result).to eq :check
+        end
+      end
+
+      context 'by blocking the attacking piece' do
+        before do
+          board_test.instance_variable_set(
+            :@board_state,
+            [King.new('W', ['A', 1]), Bishop.new('B', ['D', 4]), Rook.new('W', ['F', 3])]
+          )
+        end
+
+        it 'returns only a check' do
+          check_result = board_test.verify_check_status('W')
+          expect(check_result).to eq :check
+        end
+      end
+
+      context 'by moving the king' do
+        before do
+          board_test.instance_variable_set(
+            :@board_state,
+            [King.new('W', ['A', 1]), Rook.new('B', ['A', 5]), Knight.new('W', ['G', 3])]
+          )
+        end
+
+        it 'returns only a check' do
+          check_result = board_test.verify_check_status('W')
+          expect(check_result).to eq :check
+        end
+      end
+    end
+
+    context 'when there are attacking pieces and there is no way out' do
+      before do
+        board_test.instance_variable_set(
+          :@board_state,
+          [King.new('W', ['A', 1]), Rook.new('B', ['A', 5]), Queen.new('B', ['C', 1]), Knight.new('W', ['G', 3])]
+        )
+      end
+
+      it 'returns a checkmate' do
+        check_result = board_test.verify_check_status('W')
+        expect(check_result).to eq :checkmate
+      end
+    end
+  end
 end
