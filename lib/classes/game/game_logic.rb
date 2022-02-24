@@ -2,11 +2,15 @@
 
 # External references
 require_relative 'board'
+require_relative '../../modules/utils/board_drawer'
 require_relative '../../resources/messages/game_messages'
+require_relative '../../resources/board/board_items'
 
 # Game Logic class
 # Implements methods necessary to play a game
 class GameLogic
+  include BoardDrawer
+
   def initialize
     @game_board = Board.new
     @current_player = 'W'
