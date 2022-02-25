@@ -15,6 +15,8 @@ class GameLogic
     @game_board = Board.new
     @current_player = 'W'
     @enemy_player = 'B'
+    @turns_played = 0
+    @player_win = false
   end
 
   def turn
@@ -29,6 +31,23 @@ class GameLogic
     else
       puts GAME_MESSAGES[:request_invalid]
       false
+    end
+  end
+
+  def play
+    puts GAME_MESSAGES[:welcome]
+
+    draw_board(@game_board.board_state)
+
+    until @player_win || @turns_played == 50
+      correct_turn = false
+
+      correct_turn = turn until correct_turn
+
+      draw_board(@game_board.board_state)
+
+      @player_win = parse_check_result(@game_board.verify_check_status(@enemy_player))
+      @turns_played += 1
     end
   end
 
@@ -70,6 +89,18 @@ class GameLogic
     else
       puts move_result.message
       false
+    end
+  end
+
+  def parse_check_result(check_result)
+    case check_result
+    when :no_check then false
+    when :check
+      puts GAME_MESSAGES[:check_message]
+      false
+    when :checkmate
+      puts GAME_MESSAGES[:checkmate_message]
+      true
     end
   end
 end

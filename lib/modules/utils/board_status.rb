@@ -21,6 +21,7 @@ module BoardStatus
     elsif in_check && !check_resolved(clone_and_update_temp_board(initial, valid_move), player).empty?
       [false, MoveResult.new(false, BOARD_MESSAGES[:unresolved_check])]
     else
+      @in_check = false
       [true, nil]
     end
   end
@@ -101,6 +102,7 @@ module BoardStatus
     if can_take_attacking_piece?(attacking_pieces, protector_pieces) ||
        can_block_attacking_piece?(attacking_pieces, protector_pieces, attacked_king) ||
        !attacked_king.valid_moves(board_state).empty?
+      @in_check = true
       true
     else
       false

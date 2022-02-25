@@ -130,4 +130,90 @@ RSpec.describe GameLogic do # rubocop:disable Metrics/BlockLength
       end
     end
   end
+
+  describe '#play' do # rubocop:disable Metrics/BlockLength
+    context 'when starting a new game' do # rubocop:disable Metrics/BlockLength
+      context 'requests a player move' do
+        before do
+          allow(game_logic_test).to receive(:puts)
+          allow(game_logic_test).to receive(:draw_board)
+          allow(game_logic_test).to receive(:turn).and_return(true)
+
+          board = game_logic_test.instance_variable_get(:@game_board)
+          allow(board).to receive(:verify_check_status).and_return(:checkmate)
+        end
+
+        it 'calls for a turn once if entered correctly' do
+          expect(game_logic_test).to receive(:turn).once
+          game_logic_test.play
+        end
+      end
+
+      context 'requests a player move repeteadly' do
+        before do
+          allow(game_logic_test).to receive(:puts)
+          allow(game_logic_test).to receive(:draw_board)
+          allow(game_logic_test).to receive(:turn).and_return(false, false, true)
+
+          board = game_logic_test.instance_variable_get(:@game_board)
+          allow(board).to receive(:verify_check_status).and_return(:checkmate)
+        end
+
+        it 'calls for a turn three times' do
+          expect(game_logic_test).to receive(:turn).exactly(3).times
+          game_logic_test.play
+        end
+      end
+
+      context 'and player move does not produce a check' do
+        before do
+          allow(game_logic_test).to receive(:puts)
+          allow(game_logic_test).to receive(:draw_board)
+          allow(game_logic_test).to receive(:turn).and_return(true)
+
+          board = game_logic_test.instance_variable_get(:@game_board)
+          allow(board).to receive(:verify_check_status).and_return(:no_check)
+        end
+
+        it 'continues the game' do
+          expect(game_logic_test).to receive(:puts).once
+          game_logic_test.play
+        end
+      end
+
+      context 'and player move produces a check' do
+        before do
+          allow(game_logic_test).to receive(:puts)
+          allow(game_logic_test).to receive(:draw_board)
+          allow(game_logic_test).to receive(:turn).and_return(true)
+
+          board = game_logic_test.instance_variable_get(:@game_board)
+          allow(board).to receive(:verify_check_status).and_return(:check)
+        end
+
+        it 'shows a message for a check' do
+          check_message = "It's a CHECK!"
+          expect(game_logic_test).to receive(:puts).with(check_message)
+          game_logic_test.play
+        end
+      end
+
+      context 'and player move produces a checkmate' do
+        before do
+          allow(game_logic_test).to receive(:puts)
+          allow(game_logic_test).to receive(:draw_board)
+          allow(game_logic_test).to receive(:turn).and_return(true)
+
+          board = game_logic_test.instance_variable_get(:@game_board)
+          allow(board).to receive(:verify_check_status).and_return(:checkmate)
+        end
+
+        it 'shows a message for a checkmate' do
+          checkmate_message = 'CHECKMATE! You win!'
+          expect(game_logic_test).to receive(:puts).with(checkmate_message)
+          game_logic_test.play
+        end
+      end
+    end
+  end
 end
