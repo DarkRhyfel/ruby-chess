@@ -46,7 +46,7 @@ class GameLogic
 
       draw_board(@game_board.board_state)
 
-      @player_win = parse_check_result(@game_board.verify_check_status(@enemy_player))
+      @player_win = parse_check_result(@game_board.verify_check_status(@current_player))
       @turns_played += 1
     end
   end

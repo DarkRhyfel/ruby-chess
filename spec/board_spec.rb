@@ -43,7 +43,6 @@ RSpec.describe Board do # rubocop:disable Metrics/BlockLength
 
     context 'when the piece move has to resolve a check and it does not' do
       before do
-        board_test.instance_variable_set(:@in_check, true)
         board_test.instance_variable_set(
           :@board_state,
           [Pawn.new('W', ['A', 2]), King.new('W', ['E', 1]), Rook.new('B', ['E', 4])]
@@ -59,6 +58,7 @@ RSpec.describe Board do # rubocop:disable Metrics/BlockLength
 
     context 'when everything is valid' do
       it 'updates the piece position' do
+        allow(board_test).to receive(:check_updated_state).and_return([true, nil])
         expect(board_test).to receive(:update_state)
         board_test.move_piece('W', ['A', 2], ['A', 3])
       end

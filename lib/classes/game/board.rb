@@ -22,7 +22,6 @@ class Board
 
   def initialize
     @board_state = initialize_pieces
-    @in_check = false
   end
 
   def move_piece(current_player, initial, final)

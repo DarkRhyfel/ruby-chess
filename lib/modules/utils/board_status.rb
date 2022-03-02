@@ -18,10 +18,9 @@ module BoardStatus
   def check_updated_state(player, initial, valid_move)
     if valid_move.nil?
       [false, MoveResult.new(false, BOARD_MESSAGES[:invalid_move])]
-    elsif in_check && !check_resolved(clone_and_update_temp_board(initial, valid_move), player).empty?
+    elsif !check_resolved(clone_and_update_temp_board(initial, valid_move), player).empty?
       [false, MoveResult.new(false, BOARD_MESSAGES[:unresolved_check])]
     else
-      @in_check = false
       [true, nil]
     end
   end
@@ -40,18 +39,16 @@ module BoardStatus
   end
 
   def update_state(current_board_state, initial, valid_move)
+    current_board_state.delete_if { |piece| piece.position == valid_move.position } if valid_move.state
+
     current_board_state.map do |piece|
       piece.position = valid_move.position if piece.position == initial
       piece
     end
-
-    current_board_state.delete_if { |piece| piece.position == valid_move.position } if valid_move.state
-
-    current_board_state
   end
 
   def clone_and_update_temp_board(initial, valid_move)
-    update_state(board_state.clone, initial, valid_move)
+    update_state(board_state.map(&:clone), initial, valid_move)
   end
 
   def can_take_attacking_piece?(attacking_pieces, protector_pieces)
@@ -102,7 +99,6 @@ module BoardStatus
     if can_take_attacking_piece?(attacking_pieces, protector_pieces) ||
        can_block_attacking_piece?(attacking_pieces, protector_pieces, attacked_king) ||
        !attacked_king.valid_moves(board_state).empty?
-      @in_check = true
       true
     else
       false
