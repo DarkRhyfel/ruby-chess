@@ -50,7 +50,7 @@ class GameLogic
 
       @player_win = parse_check_result(@game_board.verify_check_status(@current_player))
       @turns_played += 1
-      ask_save_game
+      break if ask_save_game
     end
   end
 
@@ -67,10 +67,8 @@ class GameLogic
   def valid_move_format?(move_request)
     return false unless move_request.length == 6
 
-    valid_column(move_request[1]) &&
-      valid_column(move_request[4]) &&
-      valid_row(move_request[2]) &&
-      valid_row(move_request[5])
+    valid_column(move_request[1]) && valid_column(move_request[4]) &&
+      valid_row(move_request[2]) && valid_row(move_request[5])
   end
 
   def valid_column(column)
@@ -80,9 +78,7 @@ class GameLogic
   def valid_row(row)
     num_row = row.to_i
 
-    return false if num_row.zero?
-
-    num_row.between?(1, 8)
+    num_row.zero? ? false : num_row.between?(1, 8)
   end
 
   def parse_requested_move(move_request)
@@ -129,6 +125,18 @@ class GameLogic
     puts GAME_MESSAGES[:ask_save]
     option = gets.chomp.to_i
 
-    save_game(serialize) if option == 1
+    if option == 1
+      save_game(serialize)
+      ask_exit_game
+    else
+      false
+    end
+  end
+
+  def ask_exit_game
+    puts GAME_MESSAGES[:ask_exit]
+    option = gets.chomp.to_i
+
+    option == 1
   end
 end

@@ -22,7 +22,7 @@
         "@color": "W",
         "@position": [
           "C",
-          2
+          3
         ]
       },
       {
@@ -134,7 +134,7 @@
         "@color": "B",
         "@position": [
           "A",
-          7
+          5
         ]
       },
       {
@@ -261,6 +261,6 @@
   },
   "@current_player": "W",
   "@enemy_player": "B",
-  "@turns_played": 2,
+  "@turns_played": 4,
   "@player_win": false
 }
