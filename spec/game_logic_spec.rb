@@ -133,14 +133,34 @@ RSpec.describe GameLogic do # rubocop:disable Metrics/BlockLength
 
   describe '#play' do # rubocop:disable Metrics/BlockLength
     context 'when starting a new game' do # rubocop:disable Metrics/BlockLength
-      context 'requests a player move' do
+      context 'and before requesting a move' do
         before do
           allow(game_logic_test).to receive(:puts)
+          allow(game_logic_test).to receive(:ask_load_game)
           allow(game_logic_test).to receive(:draw_board)
           allow(game_logic_test).to receive(:turn).and_return(true)
 
           board = game_logic_test.instance_variable_get(:@game_board)
           allow(board).to receive(:verify_check_status).and_return(:checkmate)
+          allow(game_logic_test).to receive(:ask_save_game)
+        end
+
+        it 'asks to load a game' do
+          expect(game_logic_test).to receive(:ask_load_game)
+          game_logic_test.play
+        end
+      end
+
+      context 'requests a player move' do
+        before do
+          allow(game_logic_test).to receive(:puts)
+          allow(game_logic_test).to receive(:ask_load_game)
+          allow(game_logic_test).to receive(:draw_board)
+          allow(game_logic_test).to receive(:turn).and_return(true)
+
+          board = game_logic_test.instance_variable_get(:@game_board)
+          allow(board).to receive(:verify_check_status).and_return(:checkmate)
+          allow(game_logic_test).to receive(:ask_save_game)
         end
 
         it 'calls for a turn once if entered correctly' do
@@ -152,11 +172,13 @@ RSpec.describe GameLogic do # rubocop:disable Metrics/BlockLength
       context 'requests a player move repeteadly' do
         before do
           allow(game_logic_test).to receive(:puts)
+          allow(game_logic_test).to receive(:ask_load_game)
           allow(game_logic_test).to receive(:draw_board)
           allow(game_logic_test).to receive(:turn).and_return(false, false, true)
 
           board = game_logic_test.instance_variable_get(:@game_board)
           allow(board).to receive(:verify_check_status).and_return(:checkmate)
+          allow(game_logic_test).to receive(:ask_save_game)
         end
 
         it 'calls for a turn three times' do
@@ -165,14 +187,34 @@ RSpec.describe GameLogic do # rubocop:disable Metrics/BlockLength
         end
       end
 
+      context 'and after a turn played' do
+        before do
+          allow(game_logic_test).to receive(:puts)
+          allow(game_logic_test).to receive(:ask_load_game)
+          allow(game_logic_test).to receive(:draw_board)
+          allow(game_logic_test).to receive(:turn).and_return(true)
+
+          board = game_logic_test.instance_variable_get(:@game_board)
+          allow(board).to receive(:verify_check_status).and_return(:checkmate)
+          allow(game_logic_test).to receive(:ask_save_game)
+        end
+
+        it 'asks to save a game' do
+          expect(game_logic_test).to receive(:ask_save_game)
+          game_logic_test.play
+        end
+      end
+
       context 'and player move does not produce a check' do
         before do
           allow(game_logic_test).to receive(:puts)
+          allow(game_logic_test).to receive(:ask_load_game)
           allow(game_logic_test).to receive(:draw_board)
           allow(game_logic_test).to receive(:turn).and_return(true)
 
           board = game_logic_test.instance_variable_get(:@game_board)
           allow(board).to receive(:verify_check_status).and_return(:no_check)
+          allow(game_logic_test).to receive(:ask_save_game)
         end
 
         it 'continues the game' do
@@ -184,11 +226,13 @@ RSpec.describe GameLogic do # rubocop:disable Metrics/BlockLength
       context 'and player move produces a check' do
         before do
           allow(game_logic_test).to receive(:puts)
+          allow(game_logic_test).to receive(:ask_load_game)
           allow(game_logic_test).to receive(:draw_board)
           allow(game_logic_test).to receive(:turn).and_return(true)
 
           board = game_logic_test.instance_variable_get(:@game_board)
           allow(board).to receive(:verify_check_status).and_return(:check)
+          allow(game_logic_test).to receive(:ask_save_game)
         end
 
         it 'shows a message for a check' do
@@ -201,11 +245,13 @@ RSpec.describe GameLogic do # rubocop:disable Metrics/BlockLength
       context 'and player move produces a checkmate' do
         before do
           allow(game_logic_test).to receive(:puts)
+          allow(game_logic_test).to receive(:ask_load_game)
           allow(game_logic_test).to receive(:draw_board)
           allow(game_logic_test).to receive(:turn).and_return(true)
 
           board = game_logic_test.instance_variable_get(:@game_board)
           allow(board).to receive(:verify_check_status).and_return(:checkmate)
+          allow(game_logic_test).to receive(:ask_save_game)
         end
 
         it 'shows a message for a checkmate' do

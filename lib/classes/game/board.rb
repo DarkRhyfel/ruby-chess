@@ -10,6 +10,7 @@ require_relative '../pieces/king'
 require_relative '../extras/move_result'
 require_relative '../../modules/utils/board_initializer'
 require_relative '../../modules/utils/board_status'
+require_relative '../../modules/state/board_serializer'
 require_relative '../../resources/messages/board_messages'
 
 # Board class
@@ -17,8 +18,9 @@ require_relative '../../resources/messages/board_messages'
 class Board
   include BoardInitializer
   include BoardStatus
+  include BoardSerializer
 
-  attr_reader :board_state, :in_check
+  attr_reader :board_state
 
   def initialize
     @board_state = initialize_pieces

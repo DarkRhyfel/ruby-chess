@@ -3,6 +3,8 @@
 # External references
 require_relative 'board'
 require_relative '../../modules/utils/board_drawer'
+require_relative '../../modules/state/game_logic_serializer'
+require_relative '../../modules/state/save_load'
 require_relative '../../resources/messages/game_messages'
 require_relative '../../resources/board/board_items'
 
@@ -10,6 +12,8 @@ require_relative '../../resources/board/board_items'
 # Implements methods necessary to play a game
 class GameLogic
   include BoardDrawer
+  include GameLogicSerializer
+  include SaveLoad
 
   def initialize
     @game_board = Board.new
@@ -35,9 +39,7 @@ class GameLogic
   end
 
   def play
-    puts GAME_MESSAGES[:welcome]
-
-    draw_board(@game_board.board_state)
+    initialize_game
 
     until @player_win || @turns_played == 50
       correct_turn = false
@@ -48,10 +50,19 @@ class GameLogic
 
       @player_win = parse_check_result(@game_board.verify_check_status(@current_player))
       @turns_played += 1
+      ask_save_game
     end
   end
 
   private
+
+  def initialize_game
+    puts GAME_MESSAGES[:welcome]
+
+    ask_load_game
+
+    draw_board(@game_board.board_state)
+  end
 
   def valid_move_format?(move_request)
     return false unless move_request.length == 6
@@ -102,5 +113,22 @@ class GameLogic
       puts GAME_MESSAGES[:checkmate_message]
       true
     end
+  end
+
+  def ask_load_game
+    puts GAME_MESSAGES[:ask_load]
+    option = gets.chomp.to_i
+
+    return unless option == 1
+
+    saved = load_game
+    deserialize(saved) unless saved == 'ERROR'
+  end
+
+  def ask_save_game
+    puts GAME_MESSAGES[:ask_save]
+    option = gets.chomp.to_i
+
+    save_game(serialize) if option == 1
   end
 end

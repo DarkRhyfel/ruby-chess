@@ -1,0 +1,266 @@
+{
+  "@game_board": {
+    "@board_state": [
+      {
+        "type": "Pawn",
+        "@color": "W",
+        "@position": [
+          "A",
+          2
+        ]
+      },
+      {
+        "type": "Pawn",
+        "@color": "W",
+        "@position": [
+          "B",
+          2
+        ]
+      },
+      {
+        "type": "Pawn",
+        "@color": "W",
+        "@position": [
+          "C",
+          2
+        ]
+      },
+      {
+        "type": "Pawn",
+        "@color": "W",
+        "@position": [
+          "D",
+          2
+        ]
+      },
+      {
+        "type": "Pawn",
+        "@color": "W",
+        "@position": [
+          "E",
+          4
+        ]
+      },
+      {
+        "type": "Pawn",
+        "@color": "W",
+        "@position": [
+          "F",
+          2
+        ]
+      },
+      {
+        "type": "Pawn",
+        "@color": "W",
+        "@position": [
+          "G",
+          2
+        ]
+      },
+      {
+        "type": "Pawn",
+        "@color": "W",
+        "@position": [
+          "H",
+          2
+        ]
+      },
+      {
+        "type": "Rook",
+        "@color": "W",
+        "@position": [
+          "A",
+          1
+        ]
+      },
+      {
+        "type": "Rook",
+        "@color": "W",
+        "@position": [
+          "H",
+          1
+        ]
+      },
+      {
+        "type": "Knight",
+        "@color": "W",
+        "@position": [
+          "B",
+          1
+        ]
+      },
+      {
+        "type": "Knight",
+        "@color": "W",
+        "@position": [
+          "G",
+          1
+        ]
+      },
+      {
+        "type": "Bishop",
+        "@color": "W",
+        "@position": [
+          "C",
+          1
+        ]
+      },
+      {
+        "type": "Bishop",
+        "@color": "W",
+        "@position": [
+          "F",
+          1
+        ]
+      },
+      {
+        "type": "Queen",
+        "@color": "W",
+        "@position": [
+          "D",
+          1
+        ]
+      },
+      {
+        "type": "King",
+        "@color": "W",
+        "@position": [
+          "E",
+          1
+        ]
+      },
+      {
+        "type": "Pawn",
+        "@color": "B",
+        "@position": [
+          "A",
+          7
+        ]
+      },
+      {
+        "type": "Pawn",
+        "@color": "B",
+        "@position": [
+          "B",
+          7
+        ]
+      },
+      {
+        "type": "Pawn",
+        "@color": "B",
+        "@position": [
+          "C",
+          7
+        ]
+      },
+      {
+        "type": "Pawn",
+        "@color": "B",
+        "@position": [
+          "D",
+          7
+        ]
+      },
+      {
+        "type": "Pawn",
+        "@color": "B",
+        "@position": [
+          "E",
+          7
+        ]
+      },
+      {
+        "type": "Pawn",
+        "@color": "B",
+        "@position": [
+          "F",
+          5
+        ]
+      },
+      {
+        "type": "Pawn",
+        "@color": "B",
+        "@position": [
+          "G",
+          7
+        ]
+      },
+      {
+        "type": "Pawn",
+        "@color": "B",
+        "@position": [
+          "H",
+          7
+        ]
+      },
+      {
+        "type": "Rook",
+        "@color": "B",
+        "@position": [
+          "A",
+          8
+        ]
+      },
+      {
+        "type": "Rook",
+        "@color": "B",
+        "@position": [
+          "H",
+          8
+        ]
+      },
+      {
+        "type": "Knight",
+        "@color": "B",
+        "@position": [
+          "B",
+          8
+        ]
+      },
+      {
+        "type": "Knight",
+        "@color": "B",
+        "@position": [
+          "G",
+          8
+        ]
+      },
+      {
+        "type": "Bishop",
+        "@color": "B",
+        "@position": [
+          "C",
+          8
+        ]
+      },
+      {
+        "type": "Bishop",
+        "@color": "B",
+        "@position": [
+          "F",
+          8
+        ]
+      },
+      {
+        "type": "Queen",
+        "@color": "B",
+        "@position": [
+          "D",
+          8
+        ]
+      },
+      {
+        "type": "King",
+        "@color": "B",
+        "@position": [
+          "E",
+          8
+        ]
+      }
+    ]
+  },
+  "@current_player": "W",
+  "@enemy_player": "B",
+  "@turns_played": 2,
+  "@player_win": false
+}
